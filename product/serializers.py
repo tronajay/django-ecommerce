@@ -33,7 +33,7 @@ class ProductSerializer(serializers.Serializer):
     desc = serializers.CharField(max_length=1000)
     price = serializers.CharField(max_length=20)
     categories = serializers.PrimaryKeyRelatedField(
-        many=True, queryset=ProductCategory.objects.all()
+        queryset=ProductCategory.objects.all(), many=True
     )
     selling_price = serializers.CharField(max_length=20)
     feature_img = serializers.URLField(max_length=500)
@@ -44,13 +44,16 @@ class ProductSerializer(serializers.Serializer):
             attrs["slug"] = slugify(name)
         return attrs
 
-    def validate_categories(self, categories):
-        if not categories:
-            categories = ProductCategory.objects.filter(id=1)
-        return categories
+    def get_categories(self, instance):
+        catergories = ProductCategory.objects.filter(id__in=instance.categories)
+        return ProductCategorySerializer(catergories)
 
     def create(self, validated_data):
-        return Product.objects.create(**validated_data)
+        categories = validated_data.pop("categories")
+        product_obj = Product.objects.create(**validated_data)
+        for category in categories:
+            product_obj.categories.add(category)
+        return product_obj
 
     def update(self, instance, validated_data):
         for key in validated_data.keys():

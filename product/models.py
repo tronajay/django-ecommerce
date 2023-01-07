@@ -19,7 +19,7 @@ class Product(BaseModel):
     selling_price = models.CharField(max_length=20, blank=True, null=True)
     desc = models.CharField(max_length=500)
     feature_img = models.URLField(max_length=500, blank=True, null=True)
-    categories = models.ManyToManyField(ProductCategory, default=[1])
+    categories = models.ManyToManyField(ProductCategory, blank=True, null=True)
 
     def __str__(self):
         return self.name

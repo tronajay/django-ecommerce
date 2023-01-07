@@ -12,10 +12,18 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from accounts.serializers import UserSerializer, UserAddressSerializer
 from accounts.models import Address
 from base.throttling import CustomUserLoginThrottle
+from rest_framework.exceptions import Throttled
 
 
 class UserLoginAPIView(TokenObtainPairView):
     throttle_classes = [CustomUserLoginThrottle]
+
+    def throttled(self, request, wait):
+        raise Throttled(
+            detail={
+                "message": f"Login Request Limit Exceeded. Please Wait {wait} seconds and Try again."
+            }
+        )
 
 
 class UserAPIViewSet(ViewSet):

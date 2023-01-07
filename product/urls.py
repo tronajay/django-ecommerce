@@ -1,6 +1,4 @@
 from django.urls import path
-
-from product.models import ProductCategory
 from .views import ProductCategoryViewSet, ProductViewSet
 
 urlpatterns = [

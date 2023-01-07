@@ -1,13 +1,13 @@
 from rest_framework.viewsets import ViewSet
-from .serializers import ProductCategorySerializer, ProductSerializer
-from .models import Product, ProductCategory
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.generics import ListAPIView
-from .permissions import ReadOnly
 from base.pagination import PageNumberPaginationMod
+from product.permissions import ReadOnly
+from product.serializers import ProductCategorySerializer, ProductSerializer
+from product.models import Product, ProductCategory
 
-# Create your views here.
+
 class ProductViewSet(ListAPIView, ViewSet):
     serializer_class = ProductSerializer
     permission_classes = (IsAuthenticated | ReadOnly,)

@@ -1,2 +1,6 @@
 myenv/
 .vscode/
+accounts/__pycache__/
+order/__pycache__/
+product/__pycache__/
+drf_rest/__pycache__/
